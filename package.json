@@ -1,7 +1,7 @@
 {
   "name": "generate-dest",
   "description": "`Generate` generator that prompts the user for the destination directory to use. Can be used as a sub-generator or plugin in your generator.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/generate/generate-dest",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "generate/generate-dest",
@@ -10,6 +10,7 @@
   },
   "license": "MIT",
   "files": [
+    "generator.js",
     "index.js"
   ],
   "main": "index.js",
@@ -27,7 +28,23 @@
     "gulp-format-md": "^0.1.9",
     "mocha": "^2.5.3"
   },
-  "keywords": [],
+  "keywords": [
+    "contents",
+    "create",
+    "file",
+    "fs",
+    "generate",
+    "generator",
+    "init",
+    "initialize",
+    "render",
+    "scaffold",
+    "scaffolding",
+    "string",
+    "system",
+    "template",
+    "write"
+  ],
   "verb": {
     "toc": false,
     "layout": "generator",
@@ -38,10 +55,10 @@
       "gulp-format-md"
     ],
     "reflinks": [
+      "assemble",
       "generate",
-      "verb",
       "gulp",
-      "assemble"
+      "verb"
     ],
     "lint": {
       "reflinks": true
