@@ -7,16 +7,4 @@
 
 'use strict';
 
-var debug = require('debug')('generate-dest');
-
-module.exports = function(config) {
-  return function(app) {
-    if (this.isRegistered('generate-dest')) return;
-    debug('initializing "%s", from "%s"', __filename, module.parent.id);
-
-    this.define('dest', function() {
-      debug('running dest');
-      
-    });
-  };
-};
+module.exports = require('./generator');

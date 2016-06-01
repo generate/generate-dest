@@ -2,27 +2,34 @@
 
 require('mocha');
 var assert = require('assert');
-var dest = require('./');
+var generate = require('generate');
+var generator = require('./');
+var app;
 
 describe('generate-dest', function() {
-  it('should export a function', function() {
-    assert.equal(typeof dest, 'function');
+  beforeEach(function() {
+    app = generate();
   });
 
-  it('should export an object', function() {
-    assert(dest);
-    assert.equal(typeof dest, 'object');
-  });
+  describe('plugin', function() {
+    it('should work as a plugin', function() {
+      app.use(generator);
+      assert(app.tasks.hasOwnProperty('default'));
+      assert(app.tasks.hasOwnProperty('dest'));
+    });
 
-  it('should throw an error when invalid args are passed', function(cb) {
-    try {
-      dest();
-      cb(new Error('expected an error'));
-    } catch (err) {
-      assert(err);
-      assert.equal(err.message, 'expected first argument to be a string');
-      assert.equal(err.message, 'expected callback to be a function');
+    it('should only register the plugin once', function(cb) {
+      var count = 0;
+      app.on('plugin', function(name) {
+        if (name === 'generate-dest') {
+          count++;
+        }
+      });
+      app.use(generator);
+      app.use(generator);
+      app.use(generator);
+      assert.equal(count, 1);
       cb();
-    }
+    });
   });
 });

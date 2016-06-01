@@ -19,22 +19,32 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "is-valid-app": "^0.1.0"
+  },
   "devDependencies": {
-    "gulp-format-md": "*",
+    "generate": "^0.6.0",
+    "gulp-format-md": "^0.1.9",
     "mocha": "^2.5.3"
   },
   "keywords": [],
   "verb": {
-    "layout": "default",
+    "toc": false,
+    "layout": "generator",
+    "tasks": [
+      "readme"
+    ],
     "plugins": [
       "gulp-format-md"
     ],
-    "related": {
-      "list": []
-    },
     "reflinks": [
-      "verb"
-    ]
+      "generate",
+      "verb",
+      "gulp",
+      "assemble"
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
