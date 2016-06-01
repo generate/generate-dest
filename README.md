@@ -17,6 +17,8 @@ generate-dest is a [node.js](https://nodejs.org/en/) application that is install
 * [CLI usage](#cli)
 * [API usage](#api)
 
+***
+
 ### CLI
 
 **Installing the CLI**
