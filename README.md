@@ -81,7 +81,7 @@ $ gen dest
 
 Use as a plugin if you want to extend your own generator with the features, settings and tasks of generate-dest, as if they were created on your generator.
 
-In your [generator.js](#overview):
+In your `generator.js`:
 
 ```js
 module.exports = function(app) {
@@ -96,7 +96,7 @@ module.exports = function(app) {
 
 Use as a sub-generator if you want expose the features, settings and tasks from generate-dest on a _namespace_ in your generator.
 
-In your [generator.js](#overview):
+In your `generator.js`:
 
 ```js
 module.exports = function(app) {
