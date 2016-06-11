@@ -24,7 +24,7 @@
     "is-valid-app": "^0.1.0"
   },
   "devDependencies": {
-    "generate": "^0.6.0",
+    "generate": "^0.7.1",
     "gulp-format-md": "^0.1.9",
     "mocha": "^2.5.3"
   },
@@ -65,7 +65,8 @@
       "assemble",
       "generate",
       "gulp",
-      "verb"
+      "verb",
+      "verb-readme-generator"
     ],
     "lint": {
       "reflinks": true

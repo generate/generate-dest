@@ -10,40 +10,56 @@
 var isValid = require('is-valid-app');
 var path = require('path');
 
-module.exports = function(app) {
-  // return if this is already registered or `app` is not valid
+module.exports = function(app, base, env, options) {
   if (!isValid(app, 'generate-dest')) return;
 
   /**
-   * Prompts the user for the `dest` directory to use for writing files to the file system.
-   *
-   * _(This task is also aliased as `prompt-dest`, to free-up the `dest` task name, in case you want to use this generator as a plugin or sub-generator in your own generator.)_
+   * Prompts the user for the destination directory to use for writing files to the file system.
+   * If `app.options.dest` is already defined, the task is skipped.
    *
    * ```sh
-   * $ gen dest
+   * $ gen dest:prompt-dest
    * ```
-   * @name dest
+   * @name dest:prompt-dest
    * @api public
    */
 
-  app.task('dest', function(cb) {
-    if (app.option('dest')) {
-      cb();
+  app.task('prompt-dest', function(next) {
+    // update this generator's options with options from the `base` instance
+    app.option(base.options);
+
+    if (app.option('dest') && !options.force) {
+      next();
       return;
     }
 
-    app.question('dest', 'Destination directory?')
+    app.question('dest', 'Destination directory?', {default: app.cwd})
       .ask('dest', {save: false}, function(err, answers) {
         if (err) {
-          cb(err);
+          next(err);
           return;
         }
+
         var dest = path.resolve(answers.dest);
-        app.base.option('dest', dest);
+        base.option('dest', dest);
         app.option('dest', dest);
-        cb();
+        next();
       });
   });
 
-  app.task('default', ['dest']);
+  /**
+   * Alias for the [prompt-dest](#destprompt-dest) task. _(A generator's `default` task
+   * is run when no specific task name is given. This allows the `prompt-dest` task be
+   * run with the `gen dest` command)_
+   *
+   * ```sh
+   * $ gen dest:default
+   * # or
+   * $ gen dest
+   * ```
+   * @name dest:default
+   * @api public
+   */
+
+  app.task('default', ['prompt-dest']);
 };

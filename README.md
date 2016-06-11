@@ -1,23 +1,53 @@
 # generate-dest [![NPM version](https://img.shields.io/npm/v/generate-dest.svg?style=flat)](https://www.npmjs.com/package/generate-dest) [![NPM downloads](https://img.shields.io/npm/dm/generate-dest.svg?style=flat)](https://npmjs.org/package/generate-dest) [![Build Status](https://img.shields.io/travis/generate/generate-dest.svg?style=flat)](https://travis-ci.org/generate/generate-dest)
 
-`Generate` generator that prompts the user for the destination directory to use. Can be used as a sub-generator or plugin in your generator.
+When scaffolding out a new project, this generator simply automates a `dest` first commit, making it a continuous part of the build workflow.
+
+Run this generator with the `gen dest` command, or use in your own generator as a plugin or sub-generator.
 
 ## What is generate?
 
 Generate is a new, open source developer framework for rapidly initializing and scaffolding out new code projects, offering an intuitive CLI, and a powerful and expressive API that makes it easy and enjoyable to use.
 
-Visit the [getting started guide](https://github.com/generate/getting-started-guide) or the [generate](https://github.com/generate/generate) project and documentation to learn more.
+Visit the [getting started guide](https://github.com/generate/getting-started) or the [generate](https://github.com/generate/generate) project and documentation to learn more.
 
 ## Quickstart
 
-generate-dest is a [node.js](https://nodejs.org/en/) application that is installed using [npm](https://www.npmjs.com/). If you're unfamiliar with generate, it might help to visit the [generate](https://github.com/generate/generate) readme, or visit the [getting started guide](https://github.com/generate/getting-started-guide) before continuing on.
+### CLI usage
 
-**Usage**
+Install globally with [npm](https://www.npmjs.com/):
 
-* [CLI usage](#cli)
-* [API usage](#api)
+```sh
+$ npm install --global generate-dest
+```
 
-***
+You should now be able to run this generator's [default task](#default) with the `gen git` command. See all avallable [tasks](#tasks)
+
+### API usage
+
+**Use as a plugin**
+
+Extend your own generator with the settings and features of generate-dest:
+
+```js
+module.exports = function(app) {
+  app.use(require('generate-dest'));
+};
+```
+
+**Use as a sub-generator**
+
+Add this generator to a namespace in your generator:
+
+```js
+module.exports = function(app) {
+  // you can use any arbitrary name to register the generator
+  app.register('dest', require('generate-dest'));
+};
+```
+
+See the [API docs](#api) for more detailed examples and descriptions.
+
+## Docs
 
 ### CLI
 
@@ -61,19 +91,27 @@ If you do not see one or both of those events, please [let us know about it](../
 
 The following tasks are registered on the `dest` generator.
 
-#### [dest](generator.js#L29)
+#### [dest:prompt-dest](generator.js#L27)
 
-Prompts the user for the `dest` directory to use for writing files to the file system.
-
-_(This task is also aliased as `prompt-dest`, to free-up the `dest` task name, in case you want to use this generator as a plugin or sub-generator in your own generator.)_
+Prompts the user for the destination directory to use for writing files to the file system. If `app.options.dest` is already defined, the task is skipped.
 
 **Example**
 
 ```sh
-$ gen dest
+$ gen dest:prompt-dest
 ```
 
-***
+#### [dest:default](generator.js#L64)
+
+Alias for the [prompt-dest](#destprompt-dest) task. _(A generator's `default` task is run when no specific task name is given. This allows the `prompt-dest` task be run with the `gen dest` command)_
+
+**Example**
+
+```sh
+$ gen dest:default
+# or
+$ gen dest
+```
 
 ### API
 
@@ -118,23 +156,21 @@ module.exports = function(app) {
 
 Tasks from `generate-dest` will be available on the `foo` namespace from the API and the command line. Continuing with the previous code example, to run the `default` task on `generate-dest`, you would run `gen foo:default` (or just `gen foo` if `foo` does not conflict with an existing task on your generator).
 
-To learn more about namespaces and sub-generators, and how they work, [visit the getting started guide](https://github.com/generate/getting-started-guide).
-
-***
+To learn more about namespaces and sub-generators, and how they work, [visit the getting started guide](https://github.com/generate/getting-started).
 
 ## Related projects
 
 You might also be interested in these projects:
 
-* [generate-file](https://www.npmjs.com/package/generate-file): Generator for generating a single file from a template. | [homepage](https://github.com/generate/generate-file)
-* [generate-node](https://www.npmjs.com/package/generate-node): Generate a node.js project, with everything you need to begin writing code and easily publish… [more](https://www.npmjs.com/package/generate-node) | [homepage](https://github.com/generate/generate-node)
-* [generate](https://www.npmjs.com/package/generate): Fast, composable, highly pluggable project generator with a user-friendly and expressive API. | [homepage](https://github.com/generate/generate)
+* [generate](https://www.npmjs.com/package/generate): Fast, composable, highly pluggable project generator with a user-friendly and expressive API. | [homepage](https://github.com/generate/generate "Fast, composable, highly pluggable project generator with a user-friendly and expressive API.")
+* [generate-file](https://www.npmjs.com/package/generate-file): Generator for generating a single file from a template. | [homepage](https://github.com/generate/generate-file "Generator for generating a single file from a template.")
+* [generate-node](https://www.npmjs.com/package/generate-node): Generate a node.js project, with everything you need to begin writing code and easily publish… [more](https://github.com/generate/generate-node) | [homepage](https://github.com/generate/generate-node "Generate a node.js project, with everything you need to begin writing code and easily publish the project to npm.")
 
 ## Contributing
 
-This document was generated by [verb](https://github.com/verbose/verb), please don't edit directly. Any changes to the readme must be made in [.verb.md](.verb.md). See [Building Docs](#building-docs).
+This document was generated by [verb-readme-generator](https://github.com/verbose/verb-readme-generator) (a [verb](https://github.com/verbose/verb) generator), please don't edit directly. Any changes to the readme must be made in [.verb.md](.verb.md). See [Building Docs](#building-docs).
 
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/generate/generate-dest/issues/new).
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new). Or visit the [verb-readme-generator](https://github.com/verbose/verb-readme-generator) project to submit bug reports or pull requests for the readme layout template.
 
 ## Building docs
 
@@ -166,4 +202,4 @@ Released under the [MIT license](https://github.com/generate/generate-dest/blob/
 
 ***
 
-_This file was generated by [verb](https://github.com/verbose/verb), v0.9.0, on June 01, 2016._
+_This file was generated by [verb](https://github.com/verbose/verb), v0.9.0, on June 10, 2016._
