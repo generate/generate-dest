@@ -1,7 +1,7 @@
 {
   "name": "generate-dest",
   "description": "`Generate` generator that prompts the user for the destination directory to use. Can be used as a sub-generator or plugin in your generator.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/generate/generate-dest",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "generate/generate-dest",
