@@ -21,7 +21,8 @@
     "test": "mocha"
   },
   "dependencies": {
-    "is-valid-app": "^0.1.0"
+    "ask-when": "^0.1.1",
+    "is-valid-app": "^0.1.2"
   },
   "devDependencies": {
     "generate": "^0.7.1",

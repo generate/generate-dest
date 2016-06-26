@@ -7,11 +7,13 @@
 
 'use strict';
 
+var askWhen = require('ask-when');
 var isValid = require('is-valid-app');
 var path = require('path');
 
 module.exports = function(app, base, env, options) {
   if (!isValid(app, 'generate-dest')) return;
+  app.use(askWhen());
 
   /**
    * Prompts the user for the destination directory to use for writing files to the file system.
@@ -24,23 +26,23 @@ module.exports = function(app, base, env, options) {
    * @api public
    */
 
+  app.task('dest', ['prompt-dest']);
   app.task('prompt-dest', function(next) {
     // update this generator's options with options from the `base` instance
     app.option(base.options);
 
-    if (app.option('dest') && !options.force) {
-      next();
-      return;
+    if (typeof app.option('askWhen') === 'undefined' && !app.enabled('force')) {
+      app.option('askWhen', 'not-answered');
     }
 
     app.question('dest', 'Destination directory?', {default: app.cwd})
-      .ask('dest', {save: false}, function(err, answers) {
+      .askWhen('dest', {save: false}, function(err, answers) {
         if (err) {
           next(err);
           return;
         }
 
-        var dest = path.resolve(answers.dest);
+        var dest = path.resolve(answers.dest || app.cwd);
         base.option('dest', dest);
         app.option('dest', dest);
         next();
@@ -61,5 +63,5 @@ module.exports = function(app, base, env, options) {
    * @api public
    */
 
-  app.task('default', ['prompt-dest']);
+  app.task('default', {silent: true}, ['prompt-dest']);
 };
