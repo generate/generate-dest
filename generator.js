@@ -7,13 +7,12 @@
 
 'use strict';
 
-var askWhen = require('ask-when');
-var isValid = require('is-valid-app');
 var path = require('path');
+var isValid = require('is-valid-app');
+var ask = require('ask-when');
 
 module.exports = function(app, base, env, options) {
   if (!isValid(app, 'generate-dest')) return;
-  app.use(askWhen());
 
   /**
    * Prompts the user for the destination directory to use for writing files to the file system.
@@ -22,7 +21,7 @@ module.exports = function(app, base, env, options) {
    * ```sh
    * $ gen dest:prompt-dest
    * ```
-   * @name dest:prompt-dest
+   * @name prompt-dest
    * @api public
    */
 
@@ -35,31 +34,31 @@ module.exports = function(app, base, env, options) {
       app.option('askWhen', 'not-answered');
     }
 
-    app.question('dest', 'Destination directory?', {default: app.cwd})
-      .askWhen('dest', {save: false}, function(err, answers) {
-        if (err) {
-          next(err);
-          return;
-        }
+    app.question('dest', 'Destination directory?', {default: app.cwd});
+    ask.when(app, 'dest', {save: false}, function(err, answers) {
+      if (err) {
+        next(err);
+        return;
+      }
 
-        var dest = path.resolve(answers.dest || app.cwd);
-        base.option('dest', dest);
-        app.option('dest', dest);
-        next();
-      });
+      var dest = path.resolve(answers.dest || app.cwd);
+      base.option('dest', dest);
+      app.option('dest', dest);
+      next();
+    });
   });
 
   /**
-   * Alias for the [prompt-dest](#destprompt-dest) task. _(A generator's `default` task
-   * is run when no specific task name is given. This allows the `prompt-dest` task be
-   * run with the `gen dest` command)_
+   * Alias for the [prompt-dest](#prompt-dest) task. _(the `default` task is run when no
+   * specific task name is given. This allows the `prompt-dest` task be run with the
+   * `$ gen dest` command)_
    *
    * ```sh
    * $ gen dest:default
-   * # or
+   * # aliased as
    * $ gen dest
    * ```
-   * @name dest:default
+   * @name dest
    * @api public
    */
 
